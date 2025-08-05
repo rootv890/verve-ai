@@ -1,0 +1,24 @@
+{
+	"name": "@workspace/backend",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "convex dev",
+		"setup": "convex dev --until-success"
+	},
+	"exports": {
+		"./convex": "./convex/*.ts"
+	},
+	"devDependencies": {
+		"@workspace/typescript-config": "workspace:*",
+		"typescript": "latest"
+	},
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.4.1",
+	"dependencies": {
+		"convex": "^1.25.4"
+	}
+}

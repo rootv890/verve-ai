@@ -1,3 +1,18 @@
 {
-  "tailwindCSS.experimental.configFile": "packages/ui/src/styles/globals.css"
+	"tailwindCSS.experimental.configFile": "packages/ui/src/styles/globals.css",
+	"tailwindCSS.includeLanguages": {
+		"typescript": "javascript",
+		"typescriptreact": "javascript"
+	},
+	"tailwindCSS.files.exclude": [
+		"**/.git/**",
+		"**/node_modules/**",
+		"**/.next/**",
+		"**/dist/**"
+	],
+	"css.validate": false,
+	"tailwindCSS.experimental.classRegex": [
+		"cva\\(([^)]*)\\)",
+		"[\"'`]([^\"'`]*).*?[\"'`]"
+	]
 }
