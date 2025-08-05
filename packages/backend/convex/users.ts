@@ -11,11 +11,19 @@ export const getMany = query({
 })
 
 // identity helper
-export const checkIdentity = (ctx: MutationCtx | QueryCtx) => {
-	const identity = ctx.auth.getUserIdentity()
-	if (!identity) {
+export const checkIdentity = async (ctx: MutationCtx | QueryCtx) => {
+	const identity = await ctx.auth.getUserIdentity()
+	if (identity === null) {
 		throw new Error("Unauthorized: User must be authenticated.")
 	}
+
+	const orgId = identity["orgId"] as string
+	console.log("ORG ID:", orgId)
+
+	if (!orgId) {
+		throw new Error("Unauthorized: User must be part of an organization.")
+	}
+
 	return identity
 }
 
@@ -23,7 +31,7 @@ export const add = mutation({
 	args: { name: v.string() },
 
 	handler: async (ctx, args) => {
-		checkIdentity(ctx)
+		await checkIdentity(ctx)
 		const user = await ctx.db.insert("users", { name: args.name })
 		return user
 	},

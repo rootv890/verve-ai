@@ -1,16 +1,10 @@
 "use client"
-import { SignInButton, UserButton } from "@clerk/nextjs"
+import { OrganizationSwitcher } from "@clerk/nextjs"
 // import { api } from "@workspace/backend/convex/_generated/api"
 import { api } from "@workspace/backend/_generated/api"
-import { mutation } from "@workspace/backend/_generated/server"
 import { Button } from "@workspace/ui/components/button"
-import {
-	Authenticated,
-	Unauthenticated,
-	useMutation,
-	useQuery,
-} from "convex/react"
-import { Content } from "next/font/google"
+import { Input } from "@workspace/ui/components/input"
+import { useMutation, useQuery } from "convex/react"
 import React from "react"
 
 export default function Page() {
@@ -27,33 +21,26 @@ export default function Page() {
 	}
 
 	return (
-		<div className="flex items-center justify-center min-h-svh">
+		<div className="flex flex-col items-center justify-center min-h-svh">
 			<div className="flex flex-col items-center justify-center gap-4">
 				<h1 className="text-2xl font-bold">apps/web</h1>
 			</div>
-			<Authenticated>
-				<UserButton />
-			</Authenticated>
-			<Unauthenticated>
-				<SignInButton />
-			</Unauthenticated>
+			<OrganizationSwitcher hidePersonal />
+			<pre className="p-4 mt-4 bg-gray-100 rounded-md ">
+				{JSON.stringify(users, null, 2)}
+			</pre>
 			<form
 				onSubmit={handleSubmit}
-				className="mt-4"
+				className="flex gap-2 mt-4"
 			>
-				<input
+				<Input
 					type="text"
 					placeholder="Type something..."
-					className="border p-2 rounded"
+					className="p-2"
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
 				/>
-				<button
-					type="submit"
-					className="bg-blue-500 text-white p-2 rounded"
-				>
-					Submit
-				</button>
+				<Button type="submit">Submit</Button>
 			</form>
 		</div>
 	)

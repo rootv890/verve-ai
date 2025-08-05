@@ -1,11 +1,7 @@
-import React from "react"
+import { AuthLayout } from "@/modules/auth/ui/layouts/auth-layout"
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
-	return (
-		<section className="flex justify-center min-h-screen w-full items-center">
-			{children}
-		</section>
-	)
+const AuthenticationWrapper = ({ children }: { children: React.ReactNode }) => {
+	return <AuthLayout>{children}</AuthLayout>
 }
 
-export default AuthLayout
+export default AuthenticationWrapper
