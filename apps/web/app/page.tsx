@@ -1,9 +1,16 @@
 "use client"
+import { SignInButton, UserButton } from "@clerk/nextjs"
 // import { api } from "@workspace/backend/convex/_generated/api"
 import { api } from "@workspace/backend/_generated/api"
 import { mutation } from "@workspace/backend/_generated/server"
 import { Button } from "@workspace/ui/components/button"
-import { useMutation, useQuery } from "convex/react"
+import {
+	Authenticated,
+	Unauthenticated,
+	useMutation,
+	useQuery,
+} from "convex/react"
+import { Content } from "next/font/google"
 import React from "react"
 
 export default function Page() {
@@ -24,6 +31,12 @@ export default function Page() {
 			<div className="flex flex-col items-center justify-center gap-4">
 				<h1 className="text-2xl font-bold">apps/web</h1>
 			</div>
+			<Authenticated>
+				<UserButton />
+			</Authenticated>
+			<Unauthenticated>
+				<SignInButton />
+			</Unauthenticated>
 			<form
 				onSubmit={handleSubmit}
 				className="mt-4"
