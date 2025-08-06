@@ -6,7 +6,6 @@ import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { useMutation, useQuery } from "convex/react"
 import React from "react"
-
 export default function Page() {
 	const users = useQuery(api.users.getMany)
 	const addUser = useMutation(api.users.add)
@@ -60,6 +59,7 @@ export default function Page() {
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
 				/>
+
 				<Button type="submit">Submit</Button>
 			</form>
 		</div>

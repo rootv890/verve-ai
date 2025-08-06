@@ -1,21 +1,22 @@
 "use client"
-import AuthenticationWrapper from "@/app/(auth)/layout"
+
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react"
+import { AuthLayout } from "../layouts/auth-layout"
 import { SignInView } from "../views/sign-in-view"
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
 			<AuthLoading>
-				<AuthenticationWrapper>
+				<AuthLayout>
 					<h2>Loading...</h2>
-				</AuthenticationWrapper>
+				</AuthLayout>
 			</AuthLoading>
 			<Authenticated>{children}</Authenticated>
 			<Unauthenticated>
-				<AuthenticationWrapper>
+				<AuthLayout>
 					<SignInView />
-				</AuthenticationWrapper>
+				</AuthLayout>
 			</Unauthenticated>
 		</>
 	)

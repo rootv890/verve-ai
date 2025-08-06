@@ -8,9 +8,11 @@ import * as React from "react"
 import AuthGuard from "@/modules/auth/ui/components/auth-guard"
 import { ClerkProvider, useAuth } from "@clerk/nextjs"
 
-const convexClient = new ConvexReactClient(
-	process.env.NEXT_PUBLIC_CONVEX_URL || ""
-)
+if (!process.env.NEXT_PUBLIC_CONVEX_URL) {
+	throw new Error("NEXT_PUBLIC_CONVEX_URL environment variable is required")
+}
+
+const convexClient = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL)
 
 export function Providers({ children }: { children: React.ReactNode }) {
 	return (
