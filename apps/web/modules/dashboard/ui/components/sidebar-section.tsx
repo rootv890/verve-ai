@@ -8,6 +8,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@workspace/ui/components/sidebar"
+import { cn } from "@workspace/ui/lib/utils"
 import Link from "next/link"
 import React from "react"
 
@@ -34,11 +35,17 @@ export const SidebarSection = ({
 			<SidebarGroupContent>
 				<SidebarMenu>
 					{items.map((item) => (
-						<SidebarMenuItem key={item.title}>
+						<SidebarMenuItem
+							key={item.title}
+							className="perspective-distant"
+						>
 							<SidebarMenuButton
 								asChild
 								size="sm"
-								className="py-4 text-[16px]"
+								className={cn("py-4 text-[16px] ", {
+									"bg-linear-to-r/oklch from-sidebar-primary to-blue-400 text-background! hover:to-blue-300":
+										isActive(item.url),
+								})}
 								isActive={isActive(item.url)}
 							>
 								<Link href={item.url}>

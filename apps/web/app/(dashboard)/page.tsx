@@ -42,7 +42,7 @@ export default function Page() {
 	return (
 		<div className="flex flex-col items-center justify-center min-h-svh">
 			<div className="flex flex-col items-center justify-center gap-4">
-				<h1 className="text-2xl font-bold">apps/web</h1>
+				<h1 className="font-serif text-6xl ">apps/web</h1>
 			</div>
 			<OrganizationSwitcher hidePersonal />
 			<pre className="p-4 mt-4 bg-gray-100 rounded-md ">
