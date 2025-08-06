@@ -1,31 +1,19 @@
-# shadcn/ui monorepo template
+# 06 - VAPI Voice Assistant
 
-This template is for creating a monorepo with shadcn/ui.
+A voice assistant application built with VAPI AI integration.
+
+## Setup
+
+1. Install dependencies: `npm install`
+2. Configure your VAPI API key (see Configuration section)
+3. Run development server: `npm run dev`
+
+## Configuration
+
+Update the API key and RAM ID in `apps/widgets/modules/widget/hooks/use-vapi.ts` with your own values.
 
 ## Usage
 
-```bash
-pnpm dlx shadcn@latest init
-```
-
-## Adding components
-
-To add components to your app, run the following command at the root of your `web` app:
-
-```bash
-pnpm dlx shadcn@latest add button -c apps/web
-```
-
-This will place the ui components in the `packages/ui/src/components` directory.
-
-## Tailwind
-
-Your `tailwind.config.ts` and `globals.css` are already set up to use the components from the `ui` package.
-
-## Using components
-
-To use the components in your app, import them from the `ui` package.
-
-```tsx
-import { Button } from "@workspace/ui/components/button"
-```
+- Click "Start Call" to begin voice interaction
+- Click "End Call" to terminate the session
+- View real-time transcript and connection status

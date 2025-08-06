@@ -20,6 +20,26 @@ export default function Page() {
 		}
 	}
 
+	// Handle loading state
+	if (users === undefined) {
+		return (
+			<div className="flex flex-col items-center justify-center min-h-svh">
+				<div className="text-lg">Loading users...</div>
+			</div>
+		)
+	}
+
+	// Handle error state
+	if (users === null) {
+		return (
+			<div className="flex flex-col items-center justify-center min-h-svh">
+				<div className="text-lg text-red-600">
+					Error loading users. Please try again.
+				</div>
+			</div>
+		)
+	}
+
 	return (
 		<div className="flex flex-col items-center justify-center min-h-svh">
 			<div className="flex flex-col items-center justify-center gap-4">

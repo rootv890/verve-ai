@@ -17,8 +17,10 @@ export const checkIdentity = async (ctx: MutationCtx | QueryCtx) => {
 		throw new Error("Unauthorized: User must be authenticated.")
 	}
 
-	const orgId = identity["orgId"] as string
-	console.log("ORG ID:", orgId)
+	const orgId = identity.orgId
+	if (typeof orgId !== "string") {
+		throw new Error("Invalid organization ID format.")
+	}
 
 	if (!orgId) {
 		throw new Error("Unauthorized: User must be part of an organization.")
