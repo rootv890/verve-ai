@@ -43,7 +43,7 @@ export const SidebarSection = ({
 								asChild
 								size="sm"
 								className={cn("py-4 text-[16px] ", {
-									"bg-linear-to-r/oklch from-sidebar-primary to-blue-400 text-background! hover:to-blue-300":
+									"bg-linear-to-r/oklch from-sidebar-primary to-emerald-400 text-background! hover:to-emerald300":
 										isActive(item.url),
 								})}
 								isActive={isActive(item.url)}
