@@ -1,6 +1,6 @@
-# Verve AI Widget Project
+# Verve AI
 
-## Widget Screen Router with Jotai
+## 11 Widget Screen Router with Jotai
 
 Implemented Jotai-based state management for widget screen routing.
 
