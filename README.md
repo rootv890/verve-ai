@@ -1,6 +1,7 @@
 # Verve AI
 
-## 12 Widget Loading
+## 13 Conversations
 
-[ ] Error Screen
-[ ] Add convex function
+[x] Define Conversations Scheme \
+[x] Implement Conversations Functions \
+[x] Selection Screen
