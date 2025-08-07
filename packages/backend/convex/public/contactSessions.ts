@@ -2,16 +2,6 @@ import { v } from "convex/values"
 import { Doc } from "../_generated/dataModel"
 import { mutation } from "../_generated/server"
 
-/*
-args. name email orgId metdata(optional, all fields @schema)
-handler async ctx\args -> {
-now = Date.now()
-expiresAt = now + SESSION_DURATION
-contactSessId = await ctx.db.insert("contact_sessions", {})
-}
-
-*/
-
 const SESSION_DURATION = 24 * 60 * 60 * 1000 // in ms
 
 export type ContactSessionMetadata = Doc<"contactSessions">["metadata"]
@@ -51,5 +41,33 @@ export const create = mutation({
 			expiresAt,
 		})
 		return contactSessionId
+	},
+})
+
+export const validate = mutation({
+	args: {
+		contactSessionId: v.id("contactSessions"),
+	},
+	handler: async (ctx, args) => {
+		const contactSession = await ctx.db.get(args.contactSessionId)
+		if (!contactSession)
+			return {
+				valid: false,
+				reason: "Contact session not found",
+			}
+		if (contactSession.expiresAt < Date.now()) {
+			return {
+				valid: false,
+				reason: "Contact session expired",
+			}
+		}
+		console.log(
+			"Step 02 : Contact session validated successfully. / Backend",
+			contactSession
+		)
+
+		return {
+			valid: true,
+		}
 	},
 })

@@ -1,7 +1,6 @@
 import {
 	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -13,10 +12,17 @@ import z from "zod"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { api } from "@workspace/backend/_generated/api"
+import { Id } from "@workspace/backend/_generated/dataModel"
 import type { ContactSessionMetadata } from "@workspace/backend/public/contactSessions"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { useMutation } from "convex/react"
+import { useAtomValue, useSetAtom } from "jotai"
+import {
+	contactSessionIdAtomFamily,
+	organizationIdAtom,
+	screenAtom,
+} from "../../atoms/widget-atoms"
 import WidgetHeader from "../components/widget-header"
 type Props = {}
 
@@ -37,8 +43,18 @@ const schema = z.object({
 const organizationId = "123"
 
 export const WidgetAuthScreen = (props: Props) => {
+	const organizationId = useAtomValue(organizationIdAtom)
+	const setContactSessionId = useSetAtom(
+		contactSessionIdAtomFamily(organizationId || "")
+	)
+	const setScreen = useSetAtom(screenAtom)
+
 	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
+		defaultValues: {
+			email: "",
+			name: "",
+		},
 	})
 	const createContactSession = useMutation(api.public.contactSessions.create)
 
@@ -68,7 +84,9 @@ export const WidgetAuthScreen = (props: Props) => {
 			metadata,
 		})
 
-		console.log(contactSessionId)
+		setContactSessionId(contactSessionId)
+		// Navigate to selection screen after successful auth
+		setScreen("selection")
 	}
 
 	return (
@@ -116,7 +134,7 @@ export const WidgetAuthScreen = (props: Props) => {
 									<Input
 										className="bg-foreground"
 										type="text"
-										placeholder="••••••"
+										placeholder="awesome guy"
 										{...field}
 									/>
 								</FormControl>
