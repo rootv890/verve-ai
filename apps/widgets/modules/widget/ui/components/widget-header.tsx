@@ -10,7 +10,7 @@ const WidgetHeader = ({ children, className }: Props) => {
 	return (
 		<header
 			className={cn(
-				"bg-linear-to-br/oklch from-neutral-900 via-neutral-800 to-zinc-700 p-6 text-white shadow-xl rounded-xl",
+				"bg-linear-to-tr/oklch from-primary to-secondary-foreground p-6 text-white shadow-xl !rounded-none",
 				className
 			)}
 		>

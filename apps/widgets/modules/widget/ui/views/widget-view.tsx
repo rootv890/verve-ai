@@ -30,10 +30,6 @@ export const WidgetView = ({ organizationId }: Props) => {
 	return (
 		<main className="flex-col items-center justify-center w-full h-full min-h-screen overflow-hidden border rounded-xl bg-muted">
 			{screenComponent[screen] || <div>Unknown Screen</div>}
-			{/* Additional content can be added here */}
-			<div className="mt-4 text-center">
-				<p>Organization ID: {organizationId}</p>
-			</div>
 		</main>
 	)
 }
