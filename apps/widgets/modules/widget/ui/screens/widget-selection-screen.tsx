@@ -42,11 +42,11 @@ export const WidgetSelectionScreen = (props: Props) => {
 		}
 		try {
 			setIsPending(true)
-			const conversationId = await createConversation({
+			const result = await createConversation({
 				contactSessionId: contactSessionId as Id<"contactSessions">,
 				organizationId: organizationId,
 			})
-			setConversationId(conversationId)
+			setConversationId(result.conversationId)
 			setScreen("chat")
 		} catch (error) {
 			if (error instanceof ConvexError) {

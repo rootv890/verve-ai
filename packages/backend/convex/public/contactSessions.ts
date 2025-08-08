@@ -61,10 +61,6 @@ export const validate = mutation({
 				reason: "Contact session expired",
 			}
 		}
-		console.log(
-			"Step 02 : Contact session validated successfully. / Backend",
-			contactSession
-		)
 
 		return {
 			valid: true,

@@ -84,6 +84,13 @@ export const WidgetAuthScreen = (props: Props) => {
 			metadata,
 		})
 
+		console.log("Contact Session Created:", {
+			contactSessionId,
+			organizationId,
+			data,
+			metadata,
+		})
+
 		setContactSessionId(contactSessionId)
 		// Navigate to selection screen after successful auth
 		setScreen("selection")
@@ -102,7 +109,10 @@ export const WidgetAuthScreen = (props: Props) => {
 					</p>
 				</div>
 			</WidgetHeader>
-			<Form {...form}>
+			<Form
+				{...form}
+				key={organizationId || "no-org"}
+			>
 				<form
 					className="space-y-4 p-4"
 					onSubmit={form.handleSubmit(onSubmit)}
@@ -119,6 +129,7 @@ export const WidgetAuthScreen = (props: Props) => {
 										type="email"
 										placeholder="awesome.guy@domain.com"
 										{...field}
+										value={field.value ?? ""}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -130,12 +141,19 @@ export const WidgetAuthScreen = (props: Props) => {
 						name="name"
 						render={({ field }) => (
 							<FormItem>
+								<FormLabel
+									id="name"
+									className="text-foreground"
+								>
+									Name
+								</FormLabel>
 								<FormControl>
 									<Input
-										className="bg-foreground"
 										type="text"
-										placeholder="awesome guy"
+										placeholder="awesome guyzzzz checking here"
 										{...field}
+										value={field.value ?? ""}
+										name="name"
 									/>
 								</FormControl>
 								<FormMessage />
