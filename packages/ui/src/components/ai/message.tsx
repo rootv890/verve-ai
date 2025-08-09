@@ -32,9 +32,9 @@ export const AIMessageContent = ({
 	<div
 		className={cn(
 			"break-words",
-			"flex flex-col gap-2 rounded-lg border border-border px-3 py-2 text-sm",
-			"bg-background text-foreground",
-			"group-[.is-user]:border-transparent",
+			"flex flex-col gap-2 rounded-sm border border-border px-3 py-2 text-sm",
+			"bg-transparent border-none text-foreground",
+			"group-[.is-user]:border-transparent group-[.is-user]:bg-gradient-to-b group-[.is-user]:from-primary group-[.is-user]:to-primary/90 group-[.is-user]:text-primary-foreground",
 			className
 		)}
 		{...props}

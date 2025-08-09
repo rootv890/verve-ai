@@ -1,3 +1,3 @@
 # Verve AI
 
-## 14 AI Agent support
+## 14 AI Agent setup

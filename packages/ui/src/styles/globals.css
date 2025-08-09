@@ -14,10 +14,6 @@ body {
 	letter-spacing: var(--tracking-normal);
 }
 
-body {
-	@apply font-medium;
-}
-
 @layer base {
 	* {
 		@apply border-border outline-ring/50;

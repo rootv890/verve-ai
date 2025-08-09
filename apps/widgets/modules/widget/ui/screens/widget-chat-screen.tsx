@@ -19,8 +19,10 @@ import {
 } from "@workspace/ui/components/ai/message"
 import { AIResponse } from "@workspace/ui/components/ai/response"
 import { Button } from "@workspace/ui/components/button"
-
+import { DicebarAvatar } from "@workspace/ui/components/dicebar-avatar"
 import { Form, FormField } from "@workspace/ui/components/form"
+import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger"
+import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll"
 import { useAction, useQuery } from "convex/react"
 import { useAtomValue, useSetAtom } from "jotai"
 import { ArrowLeftIcon, MenuIcon } from "lucide-react"
@@ -109,6 +111,20 @@ export const WidgetChatScreen = (props: Props) => {
 		}
 	)
 
+	const {
+		canLoadMore,
+		handleLoadMore,
+		isExhausted,
+		isLoadingFirstPage,
+		isLoadingMore,
+		topElementRef,
+	} = useInfiniteScroll({
+		status: messages.status,
+		loadMore: messages.loadMore,
+		observerEnabled: true,
+		loadSize: 10, // Load 10 items at a time
+	})
+
 	// Define Form
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -154,8 +170,17 @@ export const WidgetChatScreen = (props: Props) => {
 
 			{/* Conversation area - takes remaining space and is scrollable */}
 			<div className="flex-1 min-h-0">
-				<AIConversation className="h-full">
-					<AIConversationContent>
+				<AIConversation className="size-full">
+					<AIConversationContent className="size-full">
+						<div className="w-full ">
+							<InfiniteScrollTrigger
+								canLoadMore={canLoadMore}
+								onLoadMore={handleLoadMore}
+								ref={topElementRef}
+								isLoadingMore={isLoadingMore}
+								// className="flex w-full justify-center"
+							/>
+						</div>
 						{toUIMessages(messages.results ?? [])?.map((message) => {
 							return (
 								<AIMessage
@@ -165,7 +190,13 @@ export const WidgetChatScreen = (props: Props) => {
 									<AIMessageContent>
 										<AIResponse>{message.content}</AIResponse>
 									</AIMessageContent>
-									{/* TODO AVATAR COMPONENT */}
+									{message.role === "assistant" && (
+										<DicebarAvatar
+											seed={message.role}
+											size={40}
+											badgeImageUrl={"/logo.png"}
+										/>
+									)}
 								</AIMessage>
 							)
 						})}
