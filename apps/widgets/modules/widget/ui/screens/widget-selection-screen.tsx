@@ -15,6 +15,7 @@ import {
 	organizationIdAtom,
 	screenAtom,
 } from "../../atoms/widget-atoms"
+import WidgetFooter from "../components/widget-footer"
 import WidgetHeader from "../components/widget-header"
 
 type Props = {}
@@ -71,7 +72,7 @@ export const WidgetSelectionScreen = (props: Props) => {
 					</p>
 				</div>
 			</WidgetHeader>
-			<div className="flex flex-col flex-1 items-center justify-center px-2 p-4 gap-y-4 ">
+			<div className="flex flex-col flex-1 items-center justify-center px-2 p-4 gap-y-4    ">
 				<Button
 					className="w-full h-16 justify-between"
 					variant={"outline"}
@@ -87,6 +88,7 @@ export const WidgetSelectionScreen = (props: Props) => {
 					<ChevronRightIcon className="w-5 h-5 text-primary" />
 				</Button>
 			</div>
+			<WidgetFooter />
 		</>
 	)
 }
