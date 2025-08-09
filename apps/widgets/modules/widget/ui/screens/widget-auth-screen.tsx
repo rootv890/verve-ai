@@ -39,9 +39,6 @@ const schema = z.object({
 		.max(100),
 })
 
-// TODO Temp
-const organizationId = "123"
-
 export const WidgetAuthScreen = (props: Props) => {
 	const organizationId = useAtomValue(organizationIdAtom)
 	const setContactSessionId = useSetAtom(
@@ -99,7 +96,7 @@ export const WidgetAuthScreen = (props: Props) => {
 	return (
 		<>
 			<WidgetHeader>
-				<div className="flex flex-col items-start justify-between px-2 py-6 gap-y-2 ">
+				<div className="flex flex-col items-start justify-between px-2 py-6 gap-y-2">
 					<h1 className="text-2xl text-primary-foreground font-serif font-semibold text-center">
 						Hi there 👋
 					</h1>
@@ -125,7 +122,7 @@ export const WidgetAuthScreen = (props: Props) => {
 								<FormLabel className="text-foreground">Email Address</FormLabel>
 								<FormControl>
 									<Input
-										className="bg-foreground focus-within:italic"
+										className="bg-primary/10 focus-within:italic"
 										type="email"
 										placeholder="awesome.guy@domain.com"
 										{...field}
@@ -150,7 +147,8 @@ export const WidgetAuthScreen = (props: Props) => {
 								<FormControl>
 									<Input
 										type="text"
-										placeholder="awesome guyzzzz checking here"
+										className="bg-primary/10 focus-within:italic"
+										placeholder="Awesome dude"
 										{...field}
 										value={field.value ?? ""}
 										name="name"
