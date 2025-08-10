@@ -146,7 +146,7 @@ export const WidgetChatScreen = (props: Props) => {
 	}
 
 	return (
-		<div className="flex flex-col bg-background justify-between h-screen">
+		<div className="flex flex-col bg-background justify-between w-screen h-screen">
 			<WidgetHeader className="flex h-fit items-center justify-between flex-shrink-0">
 				<div className="flex text-foreground items-center justify-between px-2 gap-x-2">
 					<Button

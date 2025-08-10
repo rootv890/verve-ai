@@ -1,7 +1,6 @@
 # Verve AI
 
-## 15 Infinite scroll and dicebear avatar
+## 16 Inbox and conversation list
 
-- useInfiniteScroll Hook
-- infinite scroll component
-- dicebear avatar component
+- Inifnite Scroll hook and component
+- Dicebear Avatar

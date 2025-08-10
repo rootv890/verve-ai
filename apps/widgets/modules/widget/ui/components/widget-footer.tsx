@@ -5,13 +5,11 @@ import { HomeIcon, InboxIcon } from "lucide-react"
 import React from "react"
 import { screenAtom } from "../../atoms/widget-atoms"
 
-type Props = {}
-
-const WidgetFooter = (props: Props) => {
+const WidgetFooter = () => {
 	const screen = useAtomValue(screenAtom)
 	const setScreen = useSetAtom(screenAtom)
 	return (
-		<footer className="flex items-center justify-center border-t bg-background">
+		<footer className="flex h-16 items-center justify-center border-t bg-gray-200 ">
 			<Button
 				variant="ghost"
 				className="flex items-center gap-2"
