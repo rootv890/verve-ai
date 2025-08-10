@@ -29,7 +29,7 @@ export const WidgetView = ({ organizationId }: Props) => {
 		contact: <div>Contact Screen</div>,
 	}
 	return (
-		<main className="flex-col items-center justify-center w-full h-full min-h-screen overflow-hidden border rounded-xl bg-background">
+		<main className="flex-col items-center justify-between w-full h-full min-h-screen  overflow-hidden border rounded-xl bg-background">
 			{screenComponent[screen] || <div>Unknown Screen</div>}
 		</main>
 	)
