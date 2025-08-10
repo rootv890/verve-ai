@@ -4,9 +4,6 @@ import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
-	SidebarGroup,
-	SidebarGroupContent,
-	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
@@ -14,11 +11,14 @@ import {
 	SidebarRail,
 	useSidebar,
 } from "@workspace/ui/components/sidebar"
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@workspace/ui/components/tooltip"
 import { HeroIcons } from "@workspace/ui/icons/react-icons"
-import { cn } from "@workspace/ui/lib/utils"
-import Link from "next/link"
 import { usePathname } from "next/navigation"
-import React from "react"
 import { SidebarSection } from "./sidebar-section"
 
 import type { SidebarItem } from "./sidebar-section"
@@ -74,96 +74,126 @@ const accountsItems: SidebarItem[] = [
 	},
 ]
 
-type Props = {}
-export const DashboardSidebar = (props: Props) => {
+export const DashboardSidebar = () => {
 	const pathname = usePathname()
-	const { state } = useSidebar()
-	const isActive = (url: string) => {
-		if (url === "/") {
-			return pathname === "/"
-		}
-		return pathname.startsWith(url)
-	}
+	const { state } = useSidebar() // "expanded" | "collapsed"
+
+	const isActive = (url: string) =>
+		url === "/" ? pathname === "/" : pathname.startsWith(url)
+
 	return (
-		<Sidebar
-			className="group"
-			collapsible="icon"
-		>
-			<SidebarHeader>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton
-							asChild
-							size={"lg"}
-						/>
-						<OrganizationSwitcher
-							hidePersonal
-							skipInvitationScreen
-							appearance={{
-								elements: {
-									rootBox: "w-full! h-8! ",
-									avatarBox: "size-4! rounded-full! bg",
-									organizationSwitcherTrigger:
-										"w-full! h-8! px-2 	hover:bg-sidebar-accent! hover:text-sidebar-accent-foreground! group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-4! justify-start!",
-									organizationSwitcherTriggerIcon:
-										"group-data-[collapsible=icon]:hidden! ml-auto text-sidebar-foreground!",
-									userButtonAvatarBox: "w-6 h-6 bg",
-									organizationPreview:
-										"group-data-[collapsible=icon]:justify-center! gap-4!",
-									organizationPreviewAvatarBox: "size-6! rounded-md!",
-									organizationPreviewTextContainer:
-										"group-data-[collapsible=icon]:hidden! text-xs! font-medium! text-sidebar-foreground!",
-								},
-							}}
-						/>
-					</SidebarMenuItem>
-				</SidebarMenu>
-			</SidebarHeader>
-			<SidebarContent>
-				<SidebarSection
-					title="Customer Support"
-					items={customSupportItems}
-					isActive={isActive}
-				/>
-				<SidebarSection
-					title="Configuration"
-					items={configurationItems}
-					isActive={isActive}
-				/>
-				<SidebarSection
-					title="Accounts"
-					items={accountsItems}
-					isActive={isActive}
-				/>
-			</SidebarContent>
-			<SidebarRail />
-			<SidebarFooter>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton
-							asChild
-							size="sm"
-							className="py-4 text-[16px] will-change-contents"
-						>
-							<UserButton
-								showName={state === "expanded" ? true : false}
+		<TooltipProvider delayDuration={200}>
+			<Sidebar
+				className="group"
+				collapsible="icon"
+			>
+				<SidebarHeader>
+					<SidebarMenu>
+						<SidebarMenuItem>
+							<SidebarMenuButton
+								asChild
+								size="lg"
+							/>
+							<OrganizationSwitcher
+								hidePersonal
+								skipInvitationScreen
 								appearance={{
 									elements: {
-										rootBox: "w-full! h-8! mb-4!",
-										userButtonTrigger:
-											"w-full!  px-2! hover:bg-sidebar-accent!	hover:text-sidebar-accent-foreground! group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [collapsible=icon]:justify-center! flex! justify-center! items-center! size-full! py-6!",
-										userButtonBox:
-											"w-full! flex-row-reverse! justify-end! p-0! size-full! [collapsible=icon]:justify-start! gap-4! text-sidebar-foreground!",
-										userButtonOuterIdentifier:
-											"pl-0! [collapsible=icon]:hidden! ",
-										avatarBox: "size-6! rounded-md!",
+										rootBox: "w-full! h-8!",
+										avatarBox: "size-4! rounded-full!",
+										organizationSwitcherTrigger:
+											"w-full! h-8! px-2 hover:bg-sidebar-accent! hover:text-sidebar-accent-foreground! group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-4! justify-start!",
+										organizationSwitcherTriggerIcon:
+											"group-data-[collapsible=icon]:hidden! ml-auto text-sidebar-foreground!",
+										userButtonAvatarBox: "w-6 h-6",
+										organizationPreview:
+											"group-data-[collapsible=icon]:justify-center! gap-4!",
+										organizationPreviewAvatarBox: "size-6! rounded-md!",
+										organizationPreviewTextContainer:
+											"group-data-[collapsible=icon]:hidden! text-xs! font-medium! text-sidebar-foreground!",
 									},
 								}}
 							/>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
-			</SidebarFooter>
-		</Sidebar>
+						</SidebarMenuItem>
+					</SidebarMenu>
+				</SidebarHeader>
+
+				<SidebarContent>
+					<SidebarSection
+						title="Customer Support"
+						items={customSupportItems}
+						isActive={isActive}
+					/>
+					<SidebarSection
+						title="Configuration"
+						items={configurationItems}
+						isActive={isActive}
+					/>
+					<SidebarSection
+						title="Accounts"
+						items={accountsItems}
+						isActive={isActive}
+					/>
+				</SidebarContent>
+
+				<SidebarRail />
+
+				<SidebarFooter>
+					<SidebarMenu>
+						<SidebarMenuItem>
+							{state === "collapsed" ?
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<SidebarMenuButton
+											asChild
+											size="sm"
+											className="py-4 text-[16px] will-change-contents"
+										>
+											<UserButton
+												showName={false}
+												appearance={{
+													elements: {
+														rootBox: "w-full! h-8! mb-4!",
+														userButtonTrigger:
+															"w-full! px-2! hover:bg-sidebar-accent! hover:text-sidebar-accent-foreground! group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! flex! justify-center! items-center! size-full! py-6!",
+														userButtonBox:
+															"w-full! flex-row-reverse! justify-end! p-0! size-full! gap-4! text-sidebar-foreground!",
+														userButtonOuterIdentifier:
+															"pl-0! [collapsible=icon]:hidden!",
+														avatarBox: "size-6! rounded-md!",
+													},
+												}}
+											/>
+										</SidebarMenuButton>
+									</TooltipTrigger>
+									<TooltipContent side="right">Account Menu</TooltipContent>
+								</Tooltip>
+							:	<SidebarMenuButton
+									asChild
+									size="sm"
+									className="py-4 text-[16px] will-change-contents"
+								>
+									<UserButton
+										showName={true}
+										appearance={{
+											elements: {
+												rootBox: "w-full! h-8! mb-4!",
+												userButtonTrigger:
+													"w-full! px-2! hover:bg-sidebar-accent! hover:text-sidebar-accent-foreground! group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! flex! justify-center! items-center! size-full! py-6!",
+												userButtonBox:
+													"w-full! flex-row-reverse! justify-end! p-0! size-full! gap-4! text-sidebar-foreground!",
+												userButtonOuterIdentifier:
+													"pl-0! [collapsible=icon]:hidden!",
+												avatarBox: "size-6! rounded-md!",
+											},
+										}}
+									/>
+								</SidebarMenuButton>
+							}
+						</SidebarMenuItem>
+					</SidebarMenu>
+				</SidebarFooter>
+			</Sidebar>
+		</TooltipProvider>
 	)
 }
