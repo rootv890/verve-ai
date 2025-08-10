@@ -20,8 +20,8 @@
  * - All content is wrapped in a div with the provided ref
  */
 
-import { cn } from "../lib/utils.js"
-import { Button } from "./button.js"
+import { cn } from "../lib/utils"
+import { Button } from "./button"
 
 interface InfiniteScrollTriggerProps {
 	// bools

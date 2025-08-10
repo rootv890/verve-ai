@@ -1,6 +1,5 @@
 import { ArrowRightIcon, ArrowUpIcon, CheckIcon } from "lucide-react"
-import { config } from "process"
-import { cn } from "../lib/utils.js"
+import { cn } from "../lib/utils"
 
 interface ContactStatusIconProps {
 	status: "unresolved" | "resolved" | "escalated"
@@ -10,15 +9,18 @@ interface ContactStatusIconProps {
 const statusConfig = {
 	resolved: {
 		icon: CheckIcon,
-		bgColor: "bg-emerald-500",
+		bg: "bg-emerald-400", // subtle dark background
+		text: "text-emerald-950", // vibrant icon color
 	},
 	unresolved: {
 		icon: ArrowRightIcon,
-		bgColor: "bg-destructive",
+		bg: "bg-rose-400",
+		text: "text-rose-950",
 	},
 	escalated: {
 		icon: ArrowUpIcon,
-		bgColor: "bg-yellow-500",
+		bg: "bg-yellow-400",
+		text: "text-yellow-950",
 	},
 } as const
 
@@ -26,18 +28,19 @@ export const ConversationStatusIcon = ({
 	status,
 	className,
 }: ContactStatusIconProps) => {
-	const config = statusConfig[status] || statusConfig.unresolved
-	const Icon = config.icon
+	const cfg = statusConfig[status] || statusConfig.unresolved
+	const Icon = cfg.icon
+
 	return (
 		<div
 			className={cn(
-				"flex items-center justify-center rounded-full p-1.5",
-				config.bgColor,
+				"flex items-center justify-center rounded-md p-1.5",
+				cfg.bg,
+				cfg.text,
 				className
 			)}
 		>
-			{" "}
-			<Icon className="h-4 w-4 size-5 stroke-3 text-white" />
+			<Icon className="size-5 stroke-[2.5]" />
 		</div>
 	)
 }
