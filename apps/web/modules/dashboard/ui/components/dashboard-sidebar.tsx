@@ -19,9 +19,9 @@ import {
 } from "@workspace/ui/components/tooltip"
 import { HeroIcons } from "@workspace/ui/icons/react-icons"
 import { usePathname } from "next/navigation"
-import { SidebarSection } from "./sidebar-section"
-
+import React from "react"
 import type { SidebarItem } from "./sidebar-section"
+import { SidebarSection } from "./sidebar-section"
 
 const customSupportItems: SidebarItem[] = [
 	{
