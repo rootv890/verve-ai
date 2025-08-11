@@ -1,8 +1,10 @@
 "use client"
 import { getCountryFlagUrl, getCountryFromTimeZone } from "@/lib/utils"
 import { api } from "@workspace/backend/_generated/api"
+import { Doc } from "@workspace/backend/_generated/dataModel"
 import { ConversationStatusIcon } from "@workspace/ui/components/conversation-status-icon"
 import { DicebarAvatar } from "@workspace/ui/components/dicebar-avatar"
+
 import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger"
 import { ScrollArea } from "@workspace/ui/components/scroll-area"
 import {
@@ -12,6 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@workspace/ui/components/select"
+import { Skeleton } from "@workspace/ui/components/skeleton"
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll"
 import {
 	ArrowRightIcon,
@@ -26,9 +29,6 @@ import { formatDistanceToNow } from "date-fns"
 import { useAtomValue, useSetAtom } from "jotai/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-
-import { Doc } from "@workspace/backend/_generated/dataModel"
-import { Skeleton } from "@workspace/ui/components/skeleton"
 import React from "react"
 import { statusFilterAtom } from "../../atoms"
 
@@ -94,7 +94,7 @@ const ConversationsPanel = () => {
 	})
 	return (
 		<div className="flex h-full w-full flex-col bg-background text-sidebar-foreground">
-			<div className="flex flex-col gap-3.5 border-b p-2">
+			<div className="flex flex-col gap-3.5 border-b p-2.5">
 				<Select
 					defaultValue="all"
 					value={statusFilter}

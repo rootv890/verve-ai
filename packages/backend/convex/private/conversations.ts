@@ -88,3 +88,59 @@ export const getMany = query({
 		}
 	},
 })
+
+export const getOne = query({
+	args: {
+		conversationId: v.id("conversations"),
+	},
+	handler: async (ctx, args) => {
+		// Get and validate user identity
+		const identity = await ctx.auth.getUserIdentity()
+		if (identity === null) {
+			throw new ConvexError({
+				code: "UNAUTHORIZED",
+				message: "Identity not found",
+			})
+		}
+
+		// Get and validate organization ID
+		const organizationId = identity.orgId as string
+		if (!organizationId) {
+			throw new ConvexError({
+				code: "UNAUTHORIZED",
+				message: "Organization not found",
+			})
+		}
+
+		// Get conversation
+		const conversation = await ctx.db.get(args.conversationId)
+		if (!conversation) {
+			throw new ConvexError({
+				code: "NOT_FOUND",
+				message: "Conversation not found",
+			})
+		}
+
+		// Validate organization access
+		if (conversation.organizationId !== organizationId) {
+			throw new ConvexError({
+				code: "UNAUTHORIZED",
+				message: "Invalid organization access",
+			})
+		}
+
+		// Get contact session
+		const contactSession = await ctx.db.get(conversation.contactSessionId)
+		if (!contactSession) {
+			throw new ConvexError({
+				code: "NOT_FOUND",
+				message: "Contact session not found",
+			})
+		}
+
+		return {
+			...conversation,
+			contactSession,
+		}
+	},
+})

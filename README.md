@@ -2,61 +2,9 @@
 
 A modern, AI-powered conversational platform built with Next.js, featuring intelligent customer support automation and seamless conversation management.
 
-## 17: Dashboard Inbox & Conversation Management
+## 18: Dashboard Chat
 
-### 🎯 Major Features
-
-#### Dashboard & Layout
-
-- **Responsive Inbox Layout**: Implemented a sophisticated conversation inbox with resizable panels for optimal workspace utilization
-- **Conversation Panel**: Enhanced conversation management with intuitive filtering and organization capabilities
-- **Resizable Interface**: Added `ResizablePanelGroup` components for customizable dashboard layouts with persistent sizing
-
-#### API & Data Management
-
-- **Private Conversations API**: Implemented secure `getMany` endpoint for efficient conversation retrieval with pagination support
-- **Infinite Scroll Integration**: Seamless conversation loading with performance-optimized infinite scroll triggers
-- **Date Formatting**: Added `date-fns` library for consistent, localized timestamp formatting across the platform
-
-#### UI/UX Enhancements
-
-- **DiceBear Avatar System**: Custom avatar generation with glass collection for consistent user representation
-- **Conversation Status Icons**: Brand-matched status indicators (resolved, unresolved, escalated) with semantic color coding
-- **Enhanced Tooltips**: Contextual tooltip system for collapsed sidebar states, improving accessibility
-- **Skeleton Loading States**: Professional loading animations for conversations panel and data fetching
-
-#### State Management
-
-- **Jotai Integration**: Implemented atomic state management for `SelectItem` components with localStorage persistence
-- **Contact Session Management**: Robust session handling with organization-scoped contact session atoms
-- **Filter State Persistence**: Conversation filter preferences maintained across sessions
-
-### 🛠 Technical Improvements
-
-#### Component Architecture
-
-- Modular widget screen system (`WidgetInboxScreen`, `WidgetChatScreen`)
-- Reusable UI components with TypeScript definitions
-- Consistent design system integration across web and widget applications
-
-#### Performance Optimizations
-
-- Efficient pagination with `usePaginatedQuery` hooks
-- Optimized infinite scroll implementation with configurable load sizes
-- Memoized avatar generation for improved rendering performance
-
-#### Developer Experience
-
-- Enhanced monorepo workspace configuration
-- Improved TypeScript definitions and component props
-- Streamlined component organization and file structure
-
-### 🔧 Dependencies Added
-
-- `date-fns` for robust date formatting and manipulation
-- Enhanced Convex integration for real-time data synchronization
-
----
+- A powerful dashboard for managing conversations, integrating AI capabilities, and providing real-time support.
 
 ## Getting Started
 

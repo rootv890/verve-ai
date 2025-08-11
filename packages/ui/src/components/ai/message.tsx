@@ -13,7 +13,7 @@ export type AIMessageProps = HTMLAttributes<HTMLDivElement> & {
 export const AIMessage = ({ className, from, ...props }: AIMessageProps) => (
 	<div
 		className={cn(
-			"group flex w-full items-end justify-end gap-2 py-2",
+			"font-sans group flex w-full items-end justify-end gap-2 py-2",
 			from === "user" ? "is-user" : "is-assistant flex-row-reverse justify-end",
 			"[&>div]:max-w-[80%]",
 			className
@@ -31,15 +31,15 @@ export const AIMessageContent = ({
 }: AIMessageContentProps) => (
 	<div
 		className={cn(
-			"break-words",
-			"flex flex-col gap-2 rounded-sm border border-border px-3 py-2 text-sm",
-			"bg-transparent border-none text-foreground",
-			"group-[.is-user]:border-transparent group-[.is-user]:bg-gradient-to-b group-[.is-user]:from-primary group-[.is-user]:to-primary/90 group-[.is-user]:text-primary-foreground",
+			"break-words !font-sans",
+			"flex flex-col gap-2 rounded-lg border border-border px-3 py-2 text-sm",
+			"bg-background text-foreground",
+			"group-[.is-user]:border-transparent group-[.is-user]:bg-primary group-[.is-user]:text-white",
 			className
 		)}
 		{...props}
 	>
-		<div className="is-user:dark">{children}</div>
+		<div className="font-sans is-user:dark">{children}</div>
 	</div>
 )
 
@@ -55,12 +55,12 @@ export const AIMessageAvatar = ({
 	...props
 }: AIMessageAvatarProps) => (
 	<Avatar
-		className={cn("size-8", className)}
+		className={cn("font-sans size-8", className)}
 		{...props}
 	>
 		<AvatarImage
 			alt=""
-			className="mt-0 mb-0"
+			className="font-sans mt-0 mb-0"
 			src={src}
 		/>
 		<AvatarFallback>{name?.slice(0, 2) || "ME"}</AvatarFallback>
