@@ -22,6 +22,12 @@ const buttonVariants = cva(
 				link: "text-primary underline-offset-4 hover:underline",
 				transparent:
 					"bg-transparent text-foreground hover:bg-transparent hover:text-foreground/80",
+				resolved:
+					"bg-emerald-400/50 cursor-pointer border-emerald-500 border-2 [&>*]:text-emerald-950 [&>*]:hover:text-emerald-800 rounded-md ",
+				unresolved:
+					"bg-rose-400/50 cursor-pointer border-rose-500 border-2 [&>*]:text-rose-950 [&>*]:hover:text-rose-800 rounded-md ",
+				escalated:
+					"bg-yellow-400/50 cursor-pointer border-yellow-500 border-2 [&>*]:text-yellow-950 [&>*]:hover:text-yellow-800 rounded-md ",
 			},
 			size: {
 				default: "h-9 px-4 py-2 has-[>svg]:px-3",

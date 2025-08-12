@@ -4,7 +4,9 @@ import { OrganizationSwitcher } from "@clerk/nextjs"
 import { api } from "@workspace/backend/_generated/api"
 import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
+import { BouncyLoading } from "@workspace/ui/components/loadings"
 import { useMutation, useQuery } from "convex/react"
+import { SaladIcon } from "lucide-react"
 import React from "react"
 export default function Page() {
 	const users = useQuery(api.users.getMany)
@@ -23,7 +25,7 @@ export default function Page() {
 	if (users === undefined) {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-svh">
-				<div className="text-lg">Loading users...</div>
+				<BouncyLoading label="Loading users" />
 			</div>
 		)
 	}
@@ -32,6 +34,7 @@ export default function Page() {
 	if (users === null) {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-svh">
+				<SaladIcon className="text-destructive-foreground" />
 				<div className="text-lg text-red-600">
 					Error loading users. Please try again.
 				</div>

@@ -51,7 +51,10 @@ const OldMessage = ({
 )
 
 // New message component import
-import { AIThread, AIThreadMessage } from "@workspace/ui/components/ai/thread"
+import {
+	AIThread,
+	AIThreadMessage,
+} from "@workspace/ui/components/ai-elements/thread"
 
 const comparisonMessages = [
 	{

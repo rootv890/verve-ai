@@ -2,12 +2,12 @@
 import { toUIMessages, useThreadMessages } from "@convex-dev/agent/react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { api } from "@workspace/backend/_generated/api"
-import { Id } from "@workspace/backend/_generated/dataModel"
+import { Doc, Id } from "@workspace/backend/_generated/dataModel"
 import {
-	AIConversation,
-	AIConversationContent,
-	AIConversationScrollButton,
-} from "@workspace/ui/components/ai/conversation"
+	Conversation as AIConversation,
+	ConversationContent as AIConversationContent,
+	ConversationScrollButton as AIConversationScrollButton,
+} from "@workspace/ui/components/ai-elements/conversation"
 import {
 	AIInput,
 	AIInputButton,
@@ -15,22 +15,27 @@ import {
 	AIInputTextarea,
 	AIInputToolbar,
 	AIInputTools,
-} from "@workspace/ui/components/ai/input"
+} from "@workspace/ui/components/ai-elements/input"
 import {
-	AIMessage,
-	AIMessageContent,
-} from "@workspace/ui/components/ai/message"
-import { AIResponse } from "@workspace/ui/components/ai/response"
+	Message as AIMessage,
+	MessageContent as AIMessageContent,
+} from "@workspace/ui/components/ai-elements/message"
+import { Response as AIResponse } from "@workspace/ui/components/ai-elements/response"
 import { Button } from "@workspace/ui/components/button"
+import { ConversationStatusIcon } from "@workspace/ui/components/conversation-status-icon"
 import { DicebarAvatar } from "@workspace/ui/components/dicebar-avatar"
 import { Form, FormField } from "@workspace/ui/components/form"
+import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger"
+import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll"
 import { cn } from "@workspace/ui/lib/utils"
-import { useMutation, useQuery } from "convex/react"
+import { useAction, useMutation, useQuery } from "convex/react"
 import { MoreHorizontalIcon, Wand2Icon } from "lucide-react"
 import React from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { ca } from "zod/v4/locales"
+import { ConversationIdViewLoading } from "../components/conversation-id-view-loading"
+import { ConversationStatusDropdown } from "../components/conversation-status-dropdown"
 type Props = {
 	conversationId: string
 }
@@ -40,12 +45,31 @@ const formSchema = z.object({
 })
 
 export function ConversationIdView({ conversationId }: Props) {
+	const [isUpdatingStatus, setIsUpdatingStatus] = React.useState(false)
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			message: "",
 		},
 	})
+	const [isEnhancing, setIsEnhancing] = React.useState(false)
+	const enhanceResponse = useAction(api.private.messages.enhanceResponse)
+	const handleEnhanceResponse = async () => {
+		const currentPrompt = form.getValues("message")
+		setIsEnhancing(true)
+		try {
+			const response = await enhanceResponse({
+				prompt: currentPrompt,
+			})
+			form.setValue("message", response)
+		} catch (error) {
+			// TODO: react-hot-toast
+			console.error("Failed to enhance response:", error)
+		} finally {
+			setIsEnhancing(false)
+		}
+	}
 
 	const createMessage = useMutation(api.private.messages.create)
 
@@ -64,6 +88,19 @@ export function ConversationIdView({ conversationId }: Props) {
 		}
 	)
 
+	const {
+		canLoadMore,
+		handleLoadMore,
+		isLoadingFirstPage,
+		isLoadingMore,
+		topElementRef,
+	} = useInfiniteScroll({
+		status: messages.status,
+		loadMore: messages.loadMore,
+		loadSize: 12,
+		observerEnabled: true,
+	})
+
 	const handleOnSubmit = async (data: z.infer<typeof formSchema>) => {
 		try {
 			await createMessage({
@@ -78,15 +115,53 @@ export function ConversationIdView({ conversationId }: Props) {
 		}
 	}
 
+	const updateConversationStatus = useMutation(
+		api.private.conversations.udpateStatus
+	)
+	const handleStatusChange = async (
+		newStatus: Doc<"conversations">["status"]
+	) => {
+		if (!conversations || newStatus === conversations.status) return
+		setIsUpdatingStatus(true)
+		try {
+			await updateConversationStatus({
+				conversationId: conversationId as Id<"conversations">,
+				status: newStatus,
+			})
+		} catch (error) {
+			// todo: react hot toast
+			console.error("Failed to update conversation status:", error)
+		} finally {
+			setIsUpdatingStatus(false)
+		}
+	}
+
+	if (conversations === undefined /* meaning still loading */) {
+		return <ConversationIdViewLoading />
+	}
+
 	return (
-		<div className="flex h-screen flex-1 flex-col justify-between  bg-muted/50">
+		<div className="flex max-h-screen h-full flex-1 flex-col justify-between bg-muted/50">
 			<header className="flex items-center justify-between border-b bg-background p-2.5">
 				<Button variant={"ghost"}>
 					<MoreHorizontalIcon className="h-4 w-4" />
 				</Button>
+				{!!conversations && (
+					<ConversationStatusDropdown
+						status={conversations.status}
+						onStatusChange={handleStatusChange}
+						disabled={isUpdatingStatus}
+					/>
+				)}
 			</header>
 			<AIConversation className="max-h-[calc(100vh-180px)]">
 				<AIConversationContent className="p-4">
+					<InfiniteScrollTrigger
+						canLoadMore={canLoadMore}
+						isLoadingMore={isLoadingMore}
+						onLoadMore={handleLoadMore}
+						ref={topElementRef}
+					/>
 					{toUIMessages(messages.results ?? []).map((message) => (
 						<AIMessage
 							key={message.id}
@@ -95,11 +170,9 @@ export function ConversationIdView({ conversationId }: Props) {
 							// user = means the agents or the support team
 							from={message.role === "assistant" ? "user" : "assistant"}
 						>
-							<AIMessageContent
-								className={cn("rounded-xl font-sans !text-white")}
-							>
-								<AIResponse className="rounded-md font-sans !text-white">
-									{message.content}
+							<AIMessageContent className={cn("rounded-xl font-sans ")}>
+								<AIResponse className="rounded-md font-sans ">
+									{(message as any).content}
 								</AIResponse>
 							</AIMessageContent>
 							<DicebarAvatar
@@ -128,7 +201,8 @@ export function ConversationIdView({ conversationId }: Props) {
 									}
 									disabled={
 										conversations?.status === "resolved" ||
-										form.formState.isSubmitting
+										form.formState.isSubmitting ||
+										isEnhancing
 									}
 									onChange={field.onChange}
 									onKeyDown={(e) => {
@@ -143,22 +217,28 @@ export function ConversationIdView({ conversationId }: Props) {
 						<AIInputToolbar>
 							<AIInputTools>
 								<AIInputButton
-									type="submit"
+									type="button"
 									disabled={
 										conversations?.status === "resolved" ||
-										form.formState.isSubmitting
+										form.formState.isSubmitting ||
+										!form.formState.isValid ||
+										isEnhancing
 									}
+									onClick={handleEnhanceResponse}
+									title="Enhance Response"
 								>
-									<Wand2Icon className="h-4 w-4" />
-									Enhance Response
+									<Wand2Icon
+										className={cn("h-4 w-4", isEnhancing && "animate-ping")}
+									/>
+									{isEnhancing ? "Enhancing..." : "Enhance Response"}
 								</AIInputButton>
 							</AIInputTools>
 							<AIInputSubmit
 								disabled={
 									conversations?.status === "resolved" ||
 									!form.formState.isValid ||
-									form.formState.isSubmitting
-									// TODO if enhancing response, disable submit button
+									form.formState.isSubmitting ||
+									isEnhancing
 								}
 							/>
 						</AIInputToolbar>

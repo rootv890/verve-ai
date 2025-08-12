@@ -7,19 +7,11 @@ import type { ComponentProps } from "react"
 import { useCallback } from "react"
 import { StickToBottom, useStickToBottomContext } from "use-stick-to-bottom"
 
-export type AIConversationProps = ComponentProps<typeof StickToBottom>
+export type ConversationProps = ComponentProps<typeof StickToBottom>
 
-export const AIConversation = ({
-	className,
-	...props
-}: AIConversationProps) => (
+export const Conversation = ({ className, ...props }: ConversationProps) => (
 	<StickToBottom
-		className={cn(
-			"relative flex-1 overflow-y-auto",
-			// Vercel/Twitter-like conversation feed styling
-			"bg-background",
-			className
-		)}
+		className={cn("relative flex-1 overflow-y-auto", className)}
 		initial="smooth"
 		resize="smooth"
 		role="log"
@@ -27,27 +19,26 @@ export const AIConversation = ({
 	/>
 )
 
-export type AIConversationContentProps = ComponentProps<
+export type ConversationContentProps = ComponentProps<
 	typeof StickToBottom.Content
 >
 
-export const AIConversationContent = ({
+export const ConversationContent = ({
 	className,
 	...props
-}: AIConversationContentProps) => (
+}: ConversationContentProps) => (
 	<StickToBottom.Content
-		className={cn(
-			// Twitter-like feed padding and spacing
-			"divide-y divide-border/60",
-			// Add some breathing room at the edges
-			"pb-8",
-			className
-		)}
+		className={cn("p-4", className)}
 		{...props}
 	/>
 )
 
-export const AIConversationScrollButton = () => {
+export type ConversationScrollButtonProps = ComponentProps<typeof Button>
+
+export const ConversationScrollButton = ({
+	className,
+	...props
+}: ConversationScrollButtonProps) => {
 	const { isAtBottom, scrollToBottom } = useStickToBottomContext()
 
 	const handleScrollToBottom = useCallback(() => {
@@ -58,32 +49,28 @@ export const AIConversationScrollButton = () => {
 		!isAtBottom && (
 			<Button
 				className={cn(
-					"absolute bottom-6 left-[50%] translate-x-[-50%]",
-					"rounded-full shadow-lg border border-border/50",
-					"bg-background/80 backdrop-blur-sm",
-					"hover:bg-background hover:shadow-xl",
-					"transition-all duration-200 ease-out",
-					"size-12"
+					"absolute bottom-4 left-[50%] translate-x-[-50%] rounded-full",
+					className
 				)}
 				onClick={handleScrollToBottom}
 				size="icon"
 				type="button"
 				variant="outline"
+				{...props}
 			>
 				<ArrowDownIcon className="size-4" />
-				<span className="sr-only">Scroll to bottom</span>
 			</Button>
 		)
 	)
 }
 
-export type AIConversationEmptyStateProps = ComponentProps<"div">
+export type ConversationEmptyStateProps = ComponentProps<"div">
 
-export const AIConversationEmptyState = ({
+export const ConversationEmptyState = ({
 	className,
 	children,
 	...props
-}: AIConversationEmptyStateProps) => (
+}: ConversationEmptyStateProps) => (
 	<div
 		className={cn(
 			"flex flex-col items-center justify-center h-full text-center p-8",

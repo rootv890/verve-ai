@@ -4,20 +4,20 @@ import { zodResolver } from "@hookform/resolvers/zod/dist/zod.js"
 import { api } from "@workspace/backend/_generated/api"
 import { Id } from "@workspace/backend/_generated/dataModel"
 import {
-	AIConversation,
-	AIConversationContent,
-} from "@workspace/ui/components/ai/conversation"
+	Conversation as AIConversation,
+	ConversationContent as AIConversationContent,
+} from "@workspace/ui/components/ai-elements/conversation"
 import {
 	AIInput,
 	AIInputSubmit,
 	AIInputTextarea,
 	AIInputToolbar,
-} from "@workspace/ui/components/ai/input"
+} from "@workspace/ui/components/ai-elements/input"
 import {
-	AIMessage,
-	AIMessageContent,
-} from "@workspace/ui/components/ai/message"
-import { AIResponse } from "@workspace/ui/components/ai/response"
+	Message as AIMessage,
+	MessageContent as AIMessageContent,
+} from "@workspace/ui/components/ai-elements/message"
+import { Response as AIResponse } from "@workspace/ui/components/ai-elements/response"
 import { Button } from "@workspace/ui/components/button"
 import { DicebarAvatar } from "@workspace/ui/components/dicebar-avatar"
 import { Form, FormField } from "@workspace/ui/components/form"
@@ -188,7 +188,7 @@ export const WidgetChatScreen = (props: Props) => {
 									key={message.id}
 								>
 									<AIMessageContent>
-										<AIResponse>{message.content}</AIResponse>
+										<AIResponse>{(message as any).content || ""}</AIResponse>
 									</AIMessageContent>
 									{message.role === "assistant" && (
 										<DicebarAvatar
@@ -245,7 +245,6 @@ export const WidgetChatScreen = (props: Props) => {
 						<AIInputToolbar>
 							<AIInputToolbar />
 							<AIInputSubmit
-								status="ready"
 								disabled={
 									conversation?.status === "resolved" ||
 									!form.formState.isValid ||
