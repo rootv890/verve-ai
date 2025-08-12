@@ -3,13 +3,12 @@
 import { cn } from "@workspace/ui/lib/utils"
 import type { HTMLAttributes } from "react"
 import {
-	AIMessage,
-	AIMessageAvatar,
-	AIMessageContent,
-	AIMessageHeader,
-	type AIMessageProps,
+	Message,
+	MessageAvatar,
+	MessageContent,
+	type MessageProps,
 } from "./message"
-import { AIResponse } from "./response"
+import { Response } from "./response"
 
 export type AIThreadProps = HTMLAttributes<HTMLDivElement>
 
@@ -24,7 +23,7 @@ export const AIThread = ({ className, ...props }: AIThreadProps) => (
 	/>
 )
 
-export type AIThreadMessageProps = AIMessageProps & {
+export type AIThreadMessageProps = MessageProps & {
 	avatar?: {
 		src: string
 		name?: string
@@ -48,9 +47,8 @@ export const AIThreadMessage = ({
 	className,
 	...props
 }: AIThreadMessageProps) => (
-	<AIMessage
+	<Message
 		from={from}
-		isStreaming={isStreaming}
 		className={cn(
 			"w-full max-w-none",
 			// User messages aligned to right, assistant to left
@@ -60,27 +58,27 @@ export const AIThreadMessage = ({
 		{...props}
 	>
 		{avatar && (
-			<AIMessageAvatar
+			<MessageAvatar
 				src={avatar.src}
 				name={avatar.name || name}
-				status={avatar.status}
 			/>
 		)}
 
 		<div className="flex-1 min-w-0 space-y-1">
-			<AIMessageHeader
-				name={name}
-				timestamp={timestamp}
-				role={from}
-			/>
+			{(name || timestamp) && (
+				<div className="flex items-center gap-2 text-xs text-muted-foreground">
+					{name && <span className="font-medium">{name}</span>}
+					{timestamp && <span>{timestamp}</span>}
+				</div>
+			)}
 
-			<AIMessageContent showActions={showActions}>
+			<MessageContent>
 				{from === "assistant" ?
-					<AIResponse>{content}</AIResponse>
+					<Response>{content}</Response>
 				:	<div className="text-sm leading-relaxed">{content}</div>}
-			</AIMessageContent>
+			</MessageContent>
 		</div>
-	</AIMessage>
+	</Message>
 )
 
 export type AIThreadSeparatorProps = HTMLAttributes<HTMLDivElement> & {
@@ -118,26 +116,26 @@ export const AIThreadTypingIndicator = ({
 	className,
 	...props
 }: AIThreadTypingIndicatorProps) => (
-	<AIMessage
+	<Message
 		from="assistant"
-		isStreaming={true}
 		className={cn("opacity-60", className)}
 		{...props}
 	>
 		{avatar && (
-			<AIMessageAvatar
+			<MessageAvatar
 				src={avatar.src}
 				name={avatar.name || name}
 			/>
 		)}
 
 		<div className="flex-1 min-w-0 space-y-1">
-			<AIMessageHeader
-				name={name}
-				role="assistant"
-			/>
+			{name && (
+				<div className="flex items-center gap-2 text-xs text-muted-foreground">
+					<span className="font-medium">{name}</span>
+				</div>
+			)}
 
-			<AIMessageContent>
+			<MessageContent>
 				<div className="flex items-center gap-1 text-muted-foreground">
 					<span className="text-sm">{name} is typing</span>
 					<div className="flex gap-1">
@@ -155,7 +153,7 @@ export const AIThreadTypingIndicator = ({
 						/>
 					</div>
 				</div>
-			</AIMessageContent>
+			</MessageContent>
 		</div>
-	</AIMessage>
+	</Message>
 )

@@ -4,6 +4,7 @@ import { api } from "@workspace/backend/_generated/api"
 import { Button } from "@workspace/ui/components/button"
 import { ConversationStatusIcon } from "@workspace/ui/components/conversation-status-icon"
 import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger"
+import { BouncyLoading } from "@workspace/ui/components/loadings"
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll"
 import { usePaginatedQuery } from "convex/react"
 import { formatDistanceToNow } from "date-fns"
@@ -18,7 +19,6 @@ import {
 } from "../../atoms/widget-atoms"
 import WidgetFooter from "../components/widget-footer"
 import WidgetHeader from "../components/widget-header"
-
 type Props = {}
 
 export const WidgetInboxScreen = (props: Props) => {
@@ -65,7 +65,7 @@ export const WidgetInboxScreen = (props: Props) => {
 			</WidgetHeader>
 			<div className="flex flex-col  h-full flex-1 justify-center px-2 py-6 gap-y-2 overflow-y-auto ">
 				{conversations.isLoading ?
-					<div>Loading...</div>
+					<BouncyLoading />
 				: conversations.results?.length > 0 ?
 					conversations.results.map((conversation) => (
 						<Button

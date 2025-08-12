@@ -22,6 +22,7 @@
 
 import { cn } from "../lib/utils"
 import { Button } from "./button"
+import { BouncyLoading } from "./loadings"
 
 interface InfiniteScrollTriggerProps {
 	// bools
@@ -52,6 +53,10 @@ export const InfiniteScrollTrigger = ({
 	} else if (!canLoadMore) {
 		text = noMoreText
 	}
+
+	// regex for loading matching from text
+	const isLoading = /\bloading\b/i.test(text)
+
 	return (
 		<div
 			ref={ref}
@@ -63,7 +68,9 @@ export const InfiniteScrollTrigger = ({
 				size={"sm"}
 				variant={"ghost"}
 			>
-				{text}
+				{isLoading ?
+					<BouncyLoading label={text} />
+				:	<span className="font-serif">{text}</span>}
 			</Button>
 		</div>
 	)

@@ -1,11 +1,11 @@
 "use client"
 
 import {
-	AIConversation,
-	AIConversationContent,
-	AIConversationEmptyState,
-	AIConversationScrollButton,
-} from "@workspace/ui/components/ai/conversation"
+	Conversation as AIConversation,
+	ConversationContent as AIConversationContent,
+	ConversationEmptyState as AIConversationEmptyState,
+	ConversationScrollButton as AIConversationScrollButton,
+} from "@workspace/ui/components/ai-elements/conversation"
 import {
 	AIInput,
 	AIInputButton,
@@ -13,17 +13,17 @@ import {
 	AIInputTextarea,
 	AIInputToolbar,
 	AIInputTools,
-} from "@workspace/ui/components/ai/input"
+} from "@workspace/ui/components/ai-elements/input"
 import {
-	AISuggestion,
-	AISuggestions,
-} from "@workspace/ui/components/ai/suggestion"
+	Suggestion as AISuggestion,
+	Suggestions as AISuggestions,
+} from "@workspace/ui/components/ai-elements/suggestion"
 import {
 	AIThread,
 	AIThreadMessage,
 	AIThreadSeparator,
 	AIThreadTypingIndicator,
-} from "@workspace/ui/components/ai/thread"
+} from "@workspace/ui/components/ai-elements/thread"
 import { Badge } from "@workspace/ui/components/badge"
 import { Button } from "@workspace/ui/components/button"
 import {

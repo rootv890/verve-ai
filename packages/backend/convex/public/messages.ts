@@ -1,10 +1,12 @@
+import { saveMessage } from "@convex-dev/agent"
 import { useQueries } from "convex/react"
 import { paginationOptsValidator } from "convex/server"
 import { ConvexError, v } from "convex/values"
-import { internal } from "../_generated/api"
+import { components, internal } from "../_generated/api"
 import { action, query } from "../_generated/server"
 import { supportAgent } from "../system/ai/agents/supportAgent"
-
+import { escalateConversation } from "../system/ai/tools/escalateConversation"
+import { resolveConversation } from "../system/ai/tools/resolveConversation"
 /**
  * Creates a new message in a conversation.
  * This action is used to send a message in a conversation thread.
@@ -55,17 +57,28 @@ export const create = action({
 				message: "Conversation is resolved, no messages can be sent.",
 			})
 		}
+
+		const shouldTriggerAgent =
+			conversation.status === "unresolved" ? true : false
 		// TODO: Implement subscription check
-		await supportAgent.generateText(
-			ctx,
-			{
+		if (shouldTriggerAgent) {
+			await supportAgent.generateText(
+				ctx,
+				{
+					threadId: args.threadId,
+				},
+				{
+					prompt: args.prompt,
+
+					tools: { resolveConversation, escalateConversation },
+				}
+			)
+		} else {
+			await saveMessage(ctx, components.agent, {
 				threadId: args.threadId,
-			},
-			{
 				prompt: args.prompt,
-				// TODO : tools
-			}
-		)
+			})
+		}
 	},
 })
 

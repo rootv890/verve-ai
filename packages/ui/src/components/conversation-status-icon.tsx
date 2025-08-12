@@ -1,4 +1,4 @@
-import { ArrowRightIcon, ArrowUpIcon, CheckIcon } from "lucide-react"
+import { ArrowUpIcon, CheckIcon, CircleIcon } from "lucide-react"
 import { cn } from "../lib/utils"
 
 interface ContactStatusIconProps {
@@ -13,7 +13,7 @@ const statusConfig = {
 		text: "text-emerald-950", // vibrant icon color
 	},
 	unresolved: {
-		icon: ArrowRightIcon,
+		icon: CircleIcon,
 		bg: "bg-rose-400",
 		text: "text-rose-950",
 	},
